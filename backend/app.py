@@ -28,8 +28,6 @@ def test():
 def check_symptoms():
     # Get symptoms from POST request - backend processes this
     data = request.get_json()  # Reads data
-    
-    input_text = data.get('symptoms', '')
 
     #Case 1 when no data provided
 
