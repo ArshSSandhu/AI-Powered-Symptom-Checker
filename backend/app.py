@@ -31,13 +31,32 @@ def check_symptoms():
     
     input_text = data.get('symptoms', '')
 
+    #Case 1 when no data provided
+
+    if not data:
+        return jsonify({"error": "No input data provided."}), 400
+
+    #Case 2 'symptoms' key is missing OR value is empty
+
+    input_text = data.get('symptoms', '').strip()
+
+    #strip function -> '   ' = '' removes extra spaces
+
+    #if not input_text = if input_text =='' (empty string)
+
+    if not input_text:
+        return jsonify({"error": "'symptoms' field is required and cannot be empty."}), 400
+
     #vectorize and predict
 
     vectorized_input = vectorizer.transform([input_text])
     predicted_label = model.predict(vectorized_input)[0]
     predicted_disease = label_encoder.inverse_transform([predicted_label])[0]
 
-    return jsonify({"predicted_disease": predicted_disease})
+    return jsonify({
+        "predicted_diseases": predicted_disease,
+        "message": f"Based on your symptoms, you may have {predicted_disease}. Please consult a doctor."
+    })
 
 
 # Run the app
